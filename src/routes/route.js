@@ -63,7 +63,7 @@ router.get('/movies/:indexNumber', function (req, res) {
     const movies = ['Kill Dil', 'Bhul Bhulaiya', '3 idiots', 'Raees']
     const myParams = req.params
     if (myParams.indexNumber > movies.length) {
-        res.send('Use a invalid index')
+        res.send('Use a valid index')
     } else {
         res.send(movies[Number(myParams.indexNumber)])
     }
