@@ -39,17 +39,13 @@ let players =
     let ele = req.body.element;
     for(let i = 0; i < players.length; i++){
         if(players[i].name == ele.name){
-            res.send(  { data: "Data already exist" , status: false }  )  
+           res.send( { data: "Data already exist" , status: false } ) 
         }
-    }
-    //else{
-    //LOGIC WILL COME HERE
+    else{
     players.push(ele)
-    res.send(  { data: players , status: true }  )
-    
-
-})
-
-
+    res.send( { data: players , status: true } )
+    }
+    }
+});
 
 module.exports = router;
