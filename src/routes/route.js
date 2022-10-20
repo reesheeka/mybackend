@@ -39,11 +39,11 @@ let players =
     let ele = req.body.element;
     for(let i = 0; i < players.length; i++){
         if(players[i].name == ele.name){
-           res.send( { data: "Data already exist" , status: false } ) 
+          return  res.send( { data: "Data already exist" , status: false } ) 
         }
     else{
     players.push(ele)
-    res.send( { data: players , status: true } )
+    return res.send( { data: players , status: true } )
     }
     }
 });
