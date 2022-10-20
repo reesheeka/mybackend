@@ -1,17 +1,11 @@
 const express = require('express');
 const router = express.Router();//test-you
-//importing a custom module
 const xyz = require('../logger/logger.js')
 const abc = require('../util/helper.js')
 const abc1 = require('../validator/formatter.js')
 
-//importing external package
-//const underscore = require('underscore')
 
 router.get('/test-me', function (req, res) {
-    //Calling the components of a different custom module
-    //console.log("Calling my function ",xyz.myFunction())
-    //console.log("The value of the constant is ",xyz.myUrl)
 
     console.log("calling my function ",xyz.welcome())
     console.log("Calling my function ",abc.printdate())
@@ -20,16 +14,8 @@ router.get('/test-me', function (req, res) {
     console.log("Calling my function ",abc1.printthis())
     console.log("Calling my function ",abc1.printthis1())
     console.log("Calling my function ",abc1.printthis2())
-
-    //Trying to use an external package called underscore
-    //let myArray = ['Akash', 'Pritesh', 'Sabiha']
-    //let result = underscore.first(myArray)
-    //console.log("The result of underscores examples api is : ", result)
     
     res.send('My first ever api!')
-
-    //To be tried what happens if we send multiple response
-    //res.send('My second api!')
 });
 
 module.exports = router;
