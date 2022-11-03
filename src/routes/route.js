@@ -13,7 +13,7 @@ router.get("/test-me", function (req, res) {
 
 router.post("/createUser", commonMW.myMiddleware, UserController.createUser)
 router.post("/createProduct", ProductController.createProduct)
-router.post("/createOrder", commonMW.myMiddleware, OrderController.createOrder)
+router.post("/createOrder", commonMW.myMiddleware, commonMW.myMiddleware1, OrderController.createOrder)
 
 
 module.exports = router;

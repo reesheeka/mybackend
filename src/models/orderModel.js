@@ -17,10 +17,15 @@ const orderSchema = new mongoose.Schema( {
         type: Number,
         default: 0
     },
+    isFreeAppUser: {
+        type: Boolean,
+        default: true
+    },
     date: {
         type: String,
-        default: 22/11/2021
+        default: true
     }
+
     
 }, { timestamps: true });
 
