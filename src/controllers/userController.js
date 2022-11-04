@@ -1,14 +1,14 @@
 const jwt = require("jsonwebtoken");
 const userModel = require("../models/userModel");
 
-
+//Question1
 const createUser = async function (req, res) {
     let data = req.body
     let savedData = await userModel.create(data)
     res.send({ msg: savedData })
 }
 
-
+//Question2
 const loginUser = async function (req, res) {
 
     let userName = req.body.emailId;
@@ -23,17 +23,8 @@ const loginUser = async function (req, res) {
     res.send({ status: true, token: token });
 }
 
-
+//Question3
 const getUserData = async function (req, res) {
-
-    let token = req.headers["x-auth-token"]
-    //if (!token) token = req.headers["x-auth-token"]
-
-    if (!token) return res.send({ status: false, msg: "token must be present" })
-
-    let decodedToken = jwt.verify(token, "assignment-secret-key")
-    if (!decodedToken)
-        return res.send({ status: false, msg: "token is invalid" })
 
     let userId = req.params.userId;
     let userDetails = await userModel.findById(userId)
@@ -44,44 +35,22 @@ const getUserData = async function (req, res) {
 
 };
 
-
+//Question4
 const updateUser = async function (req, res) {
-
-    let token = req.headers["x-Auth-token"]
-    if (!token) token = req.headers["x-auth-token"];
-
-    if (!token) return res.send({ status: false, msg: "token must be present" })
-
-    let decodedToken = jwt.verify(token, "assignment-secret-key")
-    if (!decodedToken)
-        return res.send({ status: false, msg: "token is invalid" })
 
     let userId = req.params.userId
     let user = await userModel.findById(userId)
-
     if (!user) {
         return res.send("No such user exists")
     }
 
     let userData = req.body
-    let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData)
-    res.send({ status: updatedUser, data: updatedUser })
-};
+    let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData, { new: true })
+    res.send({ status: true, data: updatedUser })
+}
 
+//Question5
 const deleteUser = async function (req, res) {
-
-    let token = req.headers["x-Auth-token"]
-    if (!token) token = req.headers["x-auth-token"]
-
-    if (!token){ 
-        return res.send ({ status: false, msg: "token must be present" }) 
-    }
-
-    let decodedToken = jwt.verify(token, "assignment-secret-key")
-
-    if (!decodedToken){
-        return res.send({ status: false, msg: "token is invalid" })
-    }
 
     let userId = req.params.userId
     let user = await userModel.findById(userId)
@@ -93,12 +62,9 @@ const deleteUser = async function (req, res) {
     if (decodedToken.userId !== userId) {
         return res.send({ data: "not authorized" })
     }
-    
-    //let userData = req.body
-    let deleteUser = await userModel.findOneAndUpdate({ _id: userId }, {$set: {isDeleted: true}}, {new: true})
-    res.send({ status: true, data: deleteUser })
-   
 
+    let deleteUser = await userModel.findOneAndUpdate({ _id: userId }, { $set: { isDeleted: true } }, { new: true })
+    res.send({ status: true, data: deleteUser })
 }
 
 
