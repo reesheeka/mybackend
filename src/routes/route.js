@@ -9,6 +9,4 @@ router.post("/create", UserController.middleware )
 router.get("/get", UserController.middleware1)
 
 
-
-
 module.exports = router;
