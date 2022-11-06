@@ -11,12 +11,13 @@ router.post("/users", userController.createUser)
 
 router.post("/login", userController.loginUser)
 
-router.get("/users/:userId", commonMW.authenticate, userController.getUserData)
+router.post("/users/:userId/posts", commonMW.authenticate, commonMW.authorise, userController.postMessage)
 
-//router.post("/users/:userId/posts", userController.postMessage)
+router.get("/users/:userId", commonMW.authenticate, commonMW.authorise, userController.getUserData)
 
-router.put("/users/:userId", commonMW.authenticate, userController.updateUser)
+router.put("/users/:userId", commonMW.authenticate, commonMW.authorise, userController.updateUser)
 
-router.delete('/users/:userId', commonMW.authenticate, userController.deleteUser)
+router.delete('/users/:userId', commonMW.authenticate, commonMW.authorise, userController.deleteUser)
+
 
 module.exports = router;
