@@ -2,11 +2,14 @@ const mongoose = require('mongoose')
 const objectId = mongoose.isValidObjectId
 const myMiddleware = function(req, res, next){
     
-    let { isfreeappuser } = req.headers
+    let isFreeAppUser  = req.headers.isfreeappuser
 
-    if(!isfreeappuser) {
+    if(!isFreeAppUser) {
        return res.send({msg: "request is missing a mandatory header"})
-    } 
+    } else {
+        isFreeAppUser = isFreeAppUser.toLowerCase() === 'true'? true: false
+        req.isFreeAppUser = isFreeAppUser
+    }
     next()
 }
 

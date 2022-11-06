@@ -7,11 +7,13 @@ const objectId = mongoose.Schema.Types.ObjectId
 const orderSchema = new mongoose.Schema( {
     userId: {
         type: objectId,
-        ref: "User1"
+        ref: "User1",
+        required: true
     },
     productId: {
         type: objectId,
-        ref: "Product1"
+        ref: "Product1",
+        required: true
     },
     amount: {
         type: Number,
@@ -21,10 +23,7 @@ const orderSchema = new mongoose.Schema( {
         type: Boolean,
         default: true
     },
-    date: {
-        type: String,
-        default: true
-    }
+    date: Date
 
     
 }, { timestamps: true });
