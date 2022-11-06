@@ -1,6 +1,7 @@
 const { isValidObjectId } = require("mongoose")
 const OrderModel = require("../models/orderModel")
 const userModel = require("../models/userModel")
+const productModel = require("../models/productModel")
 
 const createOrder= async function (req, res) {
     const data = req.body
@@ -18,7 +19,7 @@ const orderDocument = async function (req, res) {
         return res.send ({ msg: "user is not present" })
     }
 
-    const productDetails = await userModel.findById(productId)
+    const productDetails = await productModel.findById(productId)
     if(!productDetails){
         return res.send ({ msg: "product is not present" })
     }
@@ -48,9 +49,9 @@ const orderDocument = async function (req, res) {
             date: new Date()
         }
 
-        const order2 = await orderModel.create(order1)
+        // const order2 = await orderModel.create(order1)
         const user = await userModel.findByIdAndUpdate(userId, { $set: { balance:userDetails.balance - productDetails.price }})
-         return res.send ({ data: order2 })
+         return res.send ({ data: user })
         }
 }
     
