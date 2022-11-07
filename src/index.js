@@ -24,6 +24,8 @@ mongoose.connect("mongodb+srv://reesheeka:rishika123@cluster0.6sez6kq.mongodb.ne
 //   }
 // );
 
+//app.use
+
 app.use('/', route);
 
 app.listen(process.env.PORT || 3000, function () {
