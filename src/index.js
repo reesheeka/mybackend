@@ -14,17 +14,6 @@ mongoose.connect("mongodb+srv://reesheeka:rishika123@cluster0.6sez6kq.mongodb.ne
 .then( () => console.log("MongoDb is connected"))
 .catch ( err => console.log(err) )
 
-// Move around the following block and see how its order impacts what gets called first
-// app.use (
-//     function (req, res, next) {
-//         console.log ("inside GLOBAL MW");
-//         next()
-//         // What happens if we send a response instead of the next() call ?
-//         //res.send({msg:"done"})
-//   }
-// );
-
-//app.use
 
 app.use('/', route);
 

@@ -42,7 +42,7 @@ const mid1 = async function(req,res,next){
     }
 
     req.userDetails = userDetails
-    console.log(userDetails)
+   
     next()
     
 }

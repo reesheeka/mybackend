@@ -27,19 +27,16 @@ const loginUser = async function (req, res) {
 
 //Question3
 const getUserData = function (req, res) {
+  
   const user = req.userDetails
   res.send({ status: true, data: user });
- 
-
 }
 
 //Question4
 const postMessage = async function (req, res) {
+  
   let message = req.body.message
-
-  let user = await userModel.findById(req.params.userId)
-  if (!user) return res.send({ status: false, msg: 'No such user exists' })
-
+  let user = req.userDetails
   let updatedPosts = user.posts
   updatedPosts.push(message)
 
@@ -50,28 +47,17 @@ const postMessage = async function (req, res) {
 //Question5
 const updateUser = async function (req, res) {
 
-  let userId = req.params.userId
-  let user = await userModel.findById(userId)
-  if (!user) {
-    return res.send("No such user exists")
-  }
-
+  let user = req.userDetails
   let userData = req.body
-  let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData, { new: true })
+  let updatedUser = await userModel.findOneAndUpdate({ _id: user }, userData, { new: true })
   res.send({ status: true, data: updatedUser })
 }
 
 //Question6
 const deleteUser = async function (req, res) {
 
-  let userId = req.params.userId
-  let user = await userModel.findById(userId)
-
-  if (!user) {
-    return res.send("No such user exists")
-  }
-
-  let deleteUser = await userModel.findOneAndUpdate({ _id: userId }, { $set: { isDeleted: true } }, { new: true })
+  let user = req.userDetails
+  let deleteUser = await userModel.findOneAndUpdate({ _id: user }, { $set: { isDeleted: true } }, { new: true })
   res.send({ status: true, data: deleteUser })
 }
 
