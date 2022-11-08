@@ -1,6 +1,13 @@
-const { ObjectId } = require('mongoose');
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 const objectId = mongoose.Schema.Types.ObjectId
+
+const date = new Date()
+const currentDate = date.getDate() + "-" +
+ (date.getMonth()+1) + "-" +
+ date.getFullYear() + "-" +
+ date.getHours() + ":" +
+ date.getMinutes() + ":" + 
+ date.getSeconds()  
 
 const orderSchema = new mongoose.Schema( {
     userId: {
@@ -21,7 +28,10 @@ const orderSchema = new mongoose.Schema( {
         type: Boolean,
         default: true
     },
-    date: Date
+    date: {
+        type: String,
+        default: currentDate
+    }    
 
     
 }, { timestamps: true });

@@ -17,7 +17,6 @@ router.post("/createProduct", ProductController.createProduct)
 
 router.post("/createOrder", commonMW.myMiddleware, commonMW.myMiddleware1, OrderController.createOrder)
 
-router.post("/orderDocument", commonMW.myMiddleware, commonMW.myMiddleware1, OrderController.orderDocument)
 
 
 module.exports = router;

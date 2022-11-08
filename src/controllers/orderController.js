@@ -1,58 +1,31 @@
-const { isValidObjectId } = require("mongoose")
-const OrderModel = require("../models/orderModel")
+const orderModel = require("../models/orderModel")
 const userModel = require("../models/userModel")
 const productModel = require("../models/productModel")
 
-const createOrder= async function (req, res) {
+const createOrder = async function (req, res) {
     const data = req.body
-    const savedData3 = await OrderModel.create(data)
     const isFreeAppUser = req.isFreeAppUser
-    res.send({msg: savedData3})
-}
+    if (isFreeAppUser) {
 
-const orderDocument = async function (req, res) {
-    
-    let { userId, productId } = req.body
+        const savedData3 = await orderModel.create(data)
 
-    const userDetails = await userModel.findById(userId)
-    if(!userDetails){
-        return res.send ({ msg: "user is not present" })
-    }
-
-    const productDetails = await productModel.findById(productId)
-    if(!productDetails){
-        return res.send ({ msg: "product is not present" })
-    }
-
-    const isFreeAppUser = req.isFreeAppUser
-    if(isFreeAppUser){
-        const order = await OrderModel.create({
-            userId : userId,
-            productId: productId,
-            amount: 0,
-            isFreeAppUser: isFreeAppUser,
-            date: new Date()
-        })
-        
-        return res.send ({ data: order})
-    
+        res.send({ msg: savedData3 })
     } else {
-        
-        if(userDetails.balance < productDetails.price){
-            return res.send ({ msg: "you don't have sufficient balance" })
-        }
-        
-        const order1 = { userId : userId,
-            productId: productId,
-            amount: productDetails.price,
-            isFreeAppUser: isFreeAppUser,
-            date: new Date()
-        }
 
-        // const order2 = await orderModel.create(order1)
-        const user = await userModel.findByIdAndUpdate(userId, { $set: { balance:userDetails.balance - productDetails.price }})
-         return res.send ({ data: user })
+        let balances = await userModel.findOne({ _id: data.userId }).select({ balance: 1, _id: 0 })
+        let prices = await productModel.findOne({ _id: data.productId }).select({ price: 1, _id: 0 })
+
+        if (balances.balance > prices.price) {
+            const savedData4 = await userModel.findOneAndUpdate({ _id: data.userId }, { $set: { balance: balances.balance - prices.price } }, { new: true })
+            const savedData5 = await orderModel.create(data)
+            const savedData6 = await orderModel.findOneAndUpdate({ data }, { $set: { amount: prices.price, isFreeAppUser: false } }, { new: true })
+
+            return res.send({ msg: savedData6 })
+        } else {
+            return res.send({ msg: "insufficient balance" })
         }
+    }
 }
-    
-module.exports = { createOrder, orderDocument }
+
+
+module.exports = { createOrder }
