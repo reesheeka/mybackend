@@ -2,49 +2,67 @@ const jwt = require("jsonwebtoken")
 const userModel = require("../models/userModel")
 
 const authenticate = function (req, res, next) {
-    let token = req.headers["x-auth-token"]
 
-    if (!token) {
-        return res.send({ status: false, msg: "token must be present" })
+    try {
+
+        let token = req.headers["x-auth-token"]
+
+        if (!token) {
+            return res.status(401).send({ status: false, msg: "token must be present" })
+        }
+
+        let decodedToken = jwt.verify(token, "assignment-secret-key")
+        req.decodedToken = decodedToken
+
+        if (decodedToken) {
+            next()
+        } else {
+            return res.status(401).send({ status: false, msg: "token is invalid" })
+        }
+
     }
-
-    let decodedToken = jwt.verify(token, "assignment-secret-key")
-
-    if (!decodedToken) {
-        return res.send({ status: false, msg: "token is invalid" })
+    catch (error) {
+        return res.status(500).send({ msg: error.message })
     }
-    req.decodedToken = decodedToken
-
-    next()
 }
 
 const authorise = function (req, res, next) {
-  
-    const decodedToken = req.decodedToken
 
-    let existingUser = req.params.userId
-    let userLoggedIn = decodedToken.userId
-    
-    if (existingUser != userLoggedIn) {
-    return res.send ({ status: false, msg: "User logged and existing user is not same" })
+    try {
+
+        const decodedToken = req.decodedToken
+        let existingUser = req.params.userId
+        let userLoggedIn = decodedToken.userId
+
+        if (existingUser == userLoggedIn) {
+            next()
+        } else {
+            return res.status(401).send({ status: false, msg: "User logged and existing user is not same" })
+        }
+    }
+    catch (error) {
+        return res.status(500).send({ msg: error.message })
     }
 
-    next()
 }
 
-const mid1 = async function(req,res,next){
+const mid1 = async function (req, res, next) {
 
-    let userId = req.params.userId
-    let userDetails =  await userModel.findById(userId)
-    
-    if (!userDetails){
-      return res.send({ status: false, msg: "No such user exists" })
+    try {
+
+        let userId = req.params.userId
+        let userDetails = await userModel.findById(userId)
+        req.userDetails = userDetails
+
+        if (userDetails) {
+            next()
+        } else {
+            return res.status(401).send({ status: false, msg: "No such user exists" })
+        }
     }
-
-    req.userDetails = userDetails
-   
-    next()
-    
+    catch (error) {
+        return res.status(500).send({ msg: error.message })
+    }
 }
 
 module.exports = { authenticate, authorise, mid1 }
