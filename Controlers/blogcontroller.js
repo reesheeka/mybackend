@@ -16,21 +16,14 @@ const createBlog = async function (req, res) {
        }
       let { title, body, authorId, tags, category,subCategory, isPublished} = data
 
-//       if (!title){
-//         return res.status(400).send({ status: false, msg: "Title is required" })
-//       }
-
-//       if (typeof (title || body) !== "string") {
-//        return res.status(400).send({ status: false, msg:"Title should be string"})
-//       }
-      if(stringVerify(!title)){
+      if(!stringVerify(title)){
         return res.status(400).send({err:"Title is required"})
       }
 
-      if(stringVerify(!body)){
-        return res.status(400).send({err:"body is required"})
+      if(!stringVerify(body)){
+        return res.status(400).send({err:"invailed body formet"})
       }
-      if(stringVerify(!authorId)){
+      if(!stringVerify(authorId)){
         return res.status(400).send({err:"authorID is required"})
       }
         let authid= await authorModel.findById(data.authorId)
@@ -38,28 +31,19 @@ const createBlog = async function (req, res) {
       if(!authid){
         return res.status(400).send({err:"invalid authorid "})
       }
-      if(stringVerify(tags)){
-        return res.status(400).send({err:"Title is required"})
-      }
-      if(stringVerify(!category)){
+      
+      if(!stringVerify(category)){
         return res.status(400).send({err:"category is required"})
       }
-      if(stringVerify(subCategory)){
-        return res.status(400).send({err:"subCategory is required"})
-      }
-
-      //  if(!isPublished)
-      //  return res.status(400).send({err:"isPublished is required"})
-      // if(typeof isPublished !== "Boolean") {
-      //   return res.status(400).send({ status: false, msg:" isPublished is required" })
-      // }
-
       
-      // if(!isDeleted)
-      // return res.status(400).send({err:"deletion info is required"})
-      // if(typeof isDeleted !== "Boolean"){
-      //   return res.status(400).send({err:"enter Boolean value"})  
-      // }
+
+      if (typeof isPublished !== "boolean") {
+        return res.status(400).send({ status: false, msg: "is Published input is needed" })
+    }
+
+    if (typeof (tags && subCategory) !== "object") {
+      return res.status(400).send({ status: false, msg: "tags/subcategory should be in array of string only" })
+  }
 
       let savedData = await blogModel.create(data);
       res.status(201).send({ msg: savedData });

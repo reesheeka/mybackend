@@ -44,10 +44,6 @@ const createAuthor = async (req, res) => {
                     return res.status(400).send({ msg: "please write valid title" })
                     }
                 }
-                    // if (Password) {
-                    //     if (!stringVeri(Password)) {
-                    //         return res.status(400).send({ msg: "Password should be string" })
-                    //     }
                         let validP=passValid.test(Password)
                         if (!validP) 
                         { return res.status(400).send({ status:false,msg:" Incorrect password, it should be 6 digit with atlest one special character, alphabet and number."})}
