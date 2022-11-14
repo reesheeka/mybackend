@@ -1,13 +1,13 @@
-const AuthorController= require("../controllers/authorController");
-const BlogController= require("../controllers/blogController");
-
+const authorController= require("../Controlers/authorController");
+const blogController= require("../Controlers/blogController");
+const express = require ("express")
 const router = express.Router();
 
-router.post('/createAuthor', AuthorController.createAuthor);
+router.post('/createAuthor', authorController.createAuthor);
 
-router.post('/createBlog', BlogController.createBlog);
+router.post('/createBlog', blogController.createBlog);
 
-router.get('/getBlog', BlogController.getBlog);
+router.get('/getBlog', blogController.getBlog);
 
 
 

@@ -31,6 +31,4 @@ Password: {
 },
  {timestamps: true });
 
-
-userSchema.plugin("uniqueValidator");
 module.exports = mongoose.model('Author', authorSchema)
