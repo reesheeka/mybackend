@@ -19,6 +19,8 @@ authorId: {
 tags: {
     type: [String],
 },
+
+
 category: {
     type: String,
     required: true
@@ -34,7 +36,11 @@ isDeleted: {
 isPublished: {
     type: Boolean,
     default: false
-} 
+},
+publishedAt: {
+    type: Date,
+}
+
 },
 { timestamps: true });
 
