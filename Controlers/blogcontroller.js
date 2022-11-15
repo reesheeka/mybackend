@@ -114,10 +114,30 @@ const updateBlog = async function (req, res) {
   } catch (err) { res.status(500).send({ status: false, msg: err.message }) }
 }
 
+const deleteBlogByPathParam = async function ( req,res ) {
+ 
+  try{
+  let blogId = req.params.blogId
+  let blogData = await blogModel.findById(blogId)
+
+  if (!blogData) {
+      return res.status(404).send({ msg: "No such Blog exists" })
+  }
+
+  if(blogData.isDeleted === true) {
+    return res.status(404).send({ msg: "Blog already deleted" })
+  }
+
+  let deleteUser = await blogModel.findOneAndUpdate({ _id: blogId }, { $set: { isDeleted: true, deletedAt: new Date() } }, { new: true })
+  res.status(200).send({ status: true, data: deleteUser })
+}
+catch (err) { 
+  return res.status(500).send({ status: false, msg: err.message }) }
+}
 
 
 
 
-module.exports.createBlog = createBlog;
-module.exports.getBlog = getBlog;
-module.exports.updateBlog= updateBlog;
+
+
+module.exports = { createBlog, getBlog, updateBlog, deleteBlogByPathParam }
